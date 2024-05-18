@@ -1,0 +1,91 @@
+body {
+    background-color: #1c1c1e;
+    color: #f5f5f7;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    }
+
+form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    }
+    
+input[type="text"] {
+    background-color: #2c2c2e;
+    border: none;
+    border-radius: 4px;
+    color: #f5f5f7;
+    font-size: 16px;
+    padding: 10px;
+    margin-right: 10px;
+    width: 200px;
+    }
+    
+button {
+    background-color: #007aff;
+    border: none;
+    border-radius: 4px;
+    color: #f5f5f7;
+    font-size: 16px;
+    padding: 10px 20px;
+    cursor: pointer;
+    }
+    
+.weather-data-container {
+    display: flex;
+    justify-content: center;
+    }
+
+.chat-container {
+    margin-top: 20px;
+    text-align: center;
+    }
+
+.chat-box {
+    background-color: #2c2c2e;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 10px;
+    }
+
+.chat-box p {
+    margin-bottom: 10px;
+    }
+
+.chat-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3c3c3e;
+    color: #f5f5f7;
+    }
+
+    .chat-button {
+    background-color: #007aff;
+    border: none;
+    border-radius: 4px;
+    color: #f5f5f7;
+    font-size: 16px;
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    }
+    #chat-response-text{
+    text-align: left;
+    display: inline;
+    }
+    .typed-cursor {
+    opacity: 1;
+    animation: blink 0.7s infinite;
+    display: inline;
+    }
+
+    @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+    }

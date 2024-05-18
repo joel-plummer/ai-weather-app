@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather App</title>
+    <style>
+        body {
+            background-color: #1c1c1e;
+            color: #f5f5f7;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+          }
+        
+          form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+          }
+          
+          input[type="text"] {
+            background-color: #2c2c2e;
+            border: none;
+            border-radius: 4px;
+            color: #f5f5f7;
+            font-size: 16px;
+            padding: 10px;
+            margin-right: 10px;
+            width: 200px;
+          }
+          
+          button {
+            background-color: #007aff;
+            border: none;
+            border-radius: 4px;
+            color: #f5f5f7;
+            font-size: 16px;
+            padding: 10px 20px;
+            cursor: pointer;
+          }
+          
+          .weather-data-container {
+            display: flex;
+            justify-content: center;
+          }
+          .chat-container {
+            margin-top: 20px;
+            text-align: center;
+          }
+
+          .chat-box {
+            background-color: #2c2c2e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 10px;
+          }
+
+          .chat-box p {
+            margin-bottom: 10px;
+          }
+
+          .chat-input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #3c3c3e;
+            color: #f5f5f7;
+          }
+
+          .chat-button {
+            background-color: #007aff;
+            border: none;
+            border-radius: 4px;
+            color: #f5f5f7;
+            font-size: 16px;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+          }
+          #chat-response-text{
+            text-align: left;
+            display: inline;
+          }
+          .typed-cursor {
+            opacity: 1;
+            animation: blink 0.7s infinite;
+            display: inline;
+            
+          }
+
+          @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+          }
+          
+    </style>
+</head>
+
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="city1" placeholder="City">
+        <button type="submit">Search</button>
+    </form>
+
+    <div class="weather-data-container">
+        {% if weather_data1 %}
+            <div class="city-container">
+                {% include 'weather_app/city_weather.html' with weather_data=weather_data1%}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="chat-container">
+      <h2>Ask AI</h2>
+      <div class="chat-box">
+        <p>Select your prompt:</p>
+        <button class="chat-button"> What are good Activities to do today?</button>
+        <button class="chat-button"> What should I wear today?</button>
+        <button class="chat-button"> What kind of commute is ideal today?</button>
+        {%csrf_token%}
+      </div>
+      <div id="chat-response" class="chat-box" style="display: none;">
+        <p>AI Response:</p>
+        <p id="chat-response-text"></p>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script>
+      const chatButtons = document.querySelectorAll('.chat-button');
+      chatButtons.forEach(function(button){
+        button.addEventListener('click', function(){
+          var weather_data = '{{weather_data1}}';
+          var prompt = button.textContent;
+          console.log('Prompt', prompt);
+          var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+          console.log('Prompt', prompt);
+          console.log('Weather Data', weather_data);
+
+          fetch('/get_ai_response', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({ prompt: prompt, weather_data: weather_data}),
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Response:', data);
+            var responseText = data.response;
+            console.log('Response Text:', responseText);
+            var chatResponseText = document.getElementById('chat-response-text');
+            chatResponseText.innerHTML = '';
+
+            document.getElementById('chat-response').style.display = 'block';
+
+            // Use Typed.js to create the typing effect
+            var typed = new Typed(chatResponseText, {
+              strings: [responseText],
+              typeSpeed: 35,
+              contentType: 'html',
+              showCursor: true,
+              cursorChar:'_',
+              cursorBlinking: true,
+            });
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+        });
+      });
+    </script>
+  
+</html>

@@ -1,0 +1,37 @@
+{% if weather_data %}
+    <h1>{{ weather_data.city }}</h1>
+    <h2>{{ weather_data.temperature }}°C</h2>
+    <p>{{ weather_data.description }}</p>
+
+    <img src="http://openweathermap.org/img/w/{{ weather_data.icon }}.png" alt="{{ weather_data.description}}">
+{% endif %}
+
+<style>
+    .city-container {
+      background-color: #2c2c2e;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      width: 300px;
+    }
+  
+    h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+  
+    h2 {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+  
+    p {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+  
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  </style>
